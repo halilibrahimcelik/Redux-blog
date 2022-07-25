@@ -1,35 +1,38 @@
 import React, { useState } from "react";
 import { postAdded } from "../app/features/post/postSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { nanoid } from "@reduxjs/toolkit";
+
+import { selectAlluser } from "../app/features/users/userSlice";
 
 const AddPostForm = () => {
   const dispatch = useDispatch();
-  // const userOptions=useSelector(state)
+  const userNames = useSelector(selectAlluser);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  // const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState("");
 
   const onTitleChanged = (e) => setTitle(e.target.value);
   const onContentChanged = (e) => setContent(e.target.value);
-  // const onAuthorChanged = (e) => setUserId(e.target.value);
+  const onAuthorChanged = (e) => setUserId(e.target.value);
 
   const onSavePostClicked = () => {
     if (title && content) {
-      dispatch(postAdded(title, content));
+      dispatch(postAdded(title, content, userId));
     }
     setContent("");
     setTitle("");
+    setUserId("");
   };
 
-  const canSave = Boolean(title) && Boolean(content);
+  const canSave = Boolean(title) && Boolean(content) && Boolean(userId);
+  //?we check if title content and userId all true if it, then button is enabled.
 
-  // const usersOptions = users.map((user) => (
-  //   <option key={user.id} value={user.id}>
-  //     {user.name}
-  //   </option>
-  // ));
+  const usersOptions = userNames.map((user) => (
+    <option key={user.id} value={user.id}>
+      {user.name}
+    </option>
+  ));
 
   return (
     <section>
@@ -43,11 +46,11 @@ const AddPostForm = () => {
           value={title}
           onChange={onTitleChanged}
         />
-        {/* <label htmlFor="postAuthor">Author:</label>
+        <label htmlFor="postAuthor">Author:</label>
         <select id="postAuthor" value={userId} onChange={onAuthorChanged}>
           <option value=""></option>
           {usersOptions}
-        </select> */}
+        </select>
         <label htmlFor="postContent">Content:</label>
         <textarea
           id="postContent"
