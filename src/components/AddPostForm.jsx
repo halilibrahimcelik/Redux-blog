@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { postAdded } from "../app/features/post/postSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { postSchema } from "../validations/userValidation";
 
 import { selectAlluser } from "../app/features/users/userSlice";
 
@@ -16,7 +17,15 @@ const AddPostForm = () => {
   const onContentChanged = (e) => setContent(e.target.value);
   const onAuthorChanged = (e) => setUserId(e.target.value);
 
-  const onSavePostClicked = () => {
+  const onSavePostClicked = async () => {
+    const data = {
+      title,
+      content,
+    };
+    const isValidEntry = await postSchema.isValid(data);
+    //!we get false if we do not meet rules defined in postSchema.
+
+    console.log(isValidEntry);
     if (title && content) {
       dispatch(postAdded(title, content, userId));
     }
