@@ -15,6 +15,16 @@ const initialState = [
 const postSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {},
+  reducers: {
+    postAdded(state, action) {
+      state.push(action.payload);
+    },
+  },
 });
+
+export const selectAllPost = (state) => state.posts;
+//if shape of state changes eventually all we need to update this function
+
 export default postSlice.reducer;
+
+export const { postAdded } = postSlice.actions;
