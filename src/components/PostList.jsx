@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux/es/exports";
 import {
   selectAllPost,
@@ -6,12 +7,9 @@ import {
   fetchPosts,
 } from "../app/features/post/postSlice";
 
-import PostAuthor from "./PostAuthor";
-import React, { useEffect } from "react";
-import TimeAgo from "./TimeAgo";
-import ReactionButtons from "./ReactionButtons";
+import PostExcerpt from "./PostExcerpt";
 
-const PostList = () => {•	Gathering intel and data for AI Machine learning
+const PostList = () => {
   const posts = useSelector(selectAllPost);
   const status = useSelector(getAllStatus);
   const error = useSelector(getAllErrors);
@@ -22,25 +20,25 @@ const PostList = () => {•	Gathering intel and data for AI Machine learning
       dispatch(fetchPosts());
     }
   }, [dispatch, status]);
-  console.log(posts);
-  //slice creates a shadow copy of posts array
-  const orderedPost = posts
-    .slice()
-    .sort((a, b) => b.date.localeCompare(a.date));
-  //?we are creating article for each posts
-  const renderedPosts = orderedPost.map((post) => (
-    <article key={post.id}>
-      <h3>{post.title} </h3>
-      <p>{post.content.substring(0, 100)} </p>
-      <PostAuthor userId={post.userId} />
-      <TimeAgo timestamp={post.date} />
-      <ReactionButtons post={post} />
-    </article>
-  ));
+
+  let content;
+  if (status === "loading") {
+    content = <p>Loading </p>;
+  } else if (status === "succeeded") {
+    // slice creates a shadow copy of posts array
+    const orderedPost = posts
+      .slice()
+      .sort((a, b) => b.date.localeCompare(a.date));
+    content = orderedPost.map((post) => (
+      <PostExcerpt key={post.id} post={post} />
+    ));
+  } else if (status === "failed") {
+    content = <p>{error} </p>;
+  }
   return (
     <section>
       <h2>Posts</h2>
-      {renderedPosts}
+      {content}
     </section>
   );
 };

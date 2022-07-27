@@ -1,5 +1,7 @@
 import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 import { sub } from "date-fns";
+
 // const initialState = [
 //   {
 //     id: "1",
@@ -43,12 +45,37 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
     if (!response.ok) {
       throw new Error("Fetching failed...");
     }
-    const { data } = await response.json();
-    return [...data];
+    const data = await response.json();
+
+    return data;
   } catch (error) {
     return error.message;
   }
 });
+export const addNewPosts = createAsyncThunk(
+  "posts/addNewPosts",
+  async (initialPost) => {
+    // try {
+    //   const response = await fetch(POST_URL, {
+    //     method: "POST",
+    //     body: initialPost,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   });
+    //   if (!response.ok) {
+    //     throw new Error("Fetching failed...");
+    //   }
+    //   const data = await response.json();
+
+    //   return data;
+    // } catch (error) {
+    //   return error.message;
+    // }
+    const response = await axios.post(POST_URL, initialPost);
+    return response.data;
+  }
+);
 
 const postSlice = createSlice({
   name: "posts",
@@ -111,6 +138,19 @@ const postSlice = createSlice({
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(addNewPosts.fulfilled, (state, action) => {
+        action.payload.userId = Number(action.payload.userId); //?string geliyor userId o yüzden numbera çeviriyoruz
+        action.payload.date = new Date().toISOString();
+        action.payload.reactions = {
+          thumpsUp: 0,
+          wow: 0,
+          heart: 0,
+          rocket: 0,
+          coffee: 0,
+        };
+        console.log(action.payload);
+        state.posts.push(action.payload);
       });
   },
 });
