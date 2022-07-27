@@ -1,12 +1,28 @@
-import { useSelector } from "react-redux/es/exports";
-import { selectAllPost } from "../app/features/post/postSlice";
+import { useSelector, useDispatch } from "react-redux/es/exports";
+import {
+  selectAllPost,
+  getAllErrors,
+  getAllStatus,
+  fetchPosts,
+} from "../app/features/post/postSlice";
+
 import PostAuthor from "./PostAuthor";
-import React from "react";
+import React, { useEffect } from "react";
 import TimeAgo from "./TimeAgo";
 import ReactionButtons from "./ReactionButtons";
 
-const PostList = () => {
+const PostList = () => {•	Gathering intel and data for AI Machine learning
   const posts = useSelector(selectAllPost);
+  const status = useSelector(getAllStatus);
+  const error = useSelector(getAllErrors);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchPosts());
+    }
+  }, [dispatch, status]);
+  console.log(posts);
   //slice creates a shadow copy of posts array
   const orderedPost = posts
     .slice()
