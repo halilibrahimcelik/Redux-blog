@@ -159,6 +159,9 @@ export const selectAllPost = (state) => state.posts.posts;
 export const getAllStatus = (state) => state.posts.status;
 export const getAllErrors = (state) => state.posts.error;
 //if shape of state changes eventually all we need to update this function
+export const selectPostById = (state, postId) => {
+  state.posts.posts.find((post) => post.id === postId);
+};
 
 export default postSlice.reducer;
 
