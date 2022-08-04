@@ -3,6 +3,7 @@ import PostList from "./components/PostList";
 import SinglePostPage from "./pages/SinglePostPage";
 import Layout from "./components/layout/Layout";
 import { Routes, Route } from "react-router-dom";
+import Header from "./components/header/Header";
 
 function App() {
   return (
