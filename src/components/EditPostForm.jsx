@@ -8,10 +8,11 @@ const EditPostForm = () => {
   const navigate = useNavigate();
   const post = useSelector((state) => selectPostById(state, Number(postId)));
   const users = useSelector(selectAlluser);
-  const [title, setTitle] = useState();
-  const [content, setContent] = useState();
-  const [userId, setUserId] = useState();
+  const [title, setTitle] = useState(post?.title);
+  const [content, setContent] = useState(post?.body);
+  const [userId, setUserId] = useState(post?.userId);
   const [requestStatus, setRequestStatus] = useState("idle");
+
   const dispatch = useDispatch();
   if (!post) {
     return (
@@ -25,7 +26,7 @@ const EditPostForm = () => {
   const onAuthorChanged = (e) => setUserId(e.target.value);
   const canSave =
     [title, content, userId].every(Boolean) && requestStatus === "idle";
-
+  console.log(post.id);
   const onSavePostClicked = () => {
     try {
       if (canSave) {

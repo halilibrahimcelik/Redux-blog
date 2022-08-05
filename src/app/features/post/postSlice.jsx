@@ -82,7 +82,8 @@ export const updatePost = createAsyncThunk(
   async (initialPost) => {
     const { id } = initialPost;
     try {
-      const response = await axios.put(`${POST_URL}/"${id}`, initialPost);
+      const response = await axios.put(`${POST_URL}/${id}`, initialPost);
+
       return response.data;
     } catch (error) {
       return error.message;
@@ -172,9 +173,10 @@ const postSlice = createSlice({
         }
 
         const { id } = action.payload;
-        action.payload.date = new Date().toISOString();
+        // action.payload.date = new Date().toISOString();
         const posts = state.posts.filter((post) => post.id !== id);
         state.posts = [...posts, action.payload];
+        //?I update current post with action payload.
       });
   },
 });

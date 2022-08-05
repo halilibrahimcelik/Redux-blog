@@ -3,8 +3,8 @@ import PostList from "./components/PostList";
 import SinglePostPage from "./pages/SinglePostPage";
 import Layout from "./components/layout/Layout";
 import { Routes, Route } from "react-router-dom";
-import Header from "./components/header/Header";
 
+import EditPostForm from "./components/EditPostForm";
 function App() {
   return (
     <Routes>
@@ -13,6 +13,7 @@ function App() {
         <Route path="post">
           <Route index element={<AddPostForm />} />
           <Route path=":postId" element={<SinglePostPage />} />
+          <Route path="edit/:postId" element={<EditPostForm />} />
         </Route>
       </Route>
     </Routes>
