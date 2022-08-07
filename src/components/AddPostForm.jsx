@@ -5,9 +5,11 @@ import { postSchema } from "../validations/userValidation";
 
 import { selectAlluser } from "../app/features/users/userSlice";
 import { nanoid } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router-dom";
 
 const AddPostForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userNames = useSelector(selectAlluser);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -40,11 +42,12 @@ const AddPostForm = () => {
       try {
         setAddReqeuestStatus("pending");
         dispatch(
-          addNewPosts({ title, body: content, userId: nanoid() })
+          addNewPosts({ title, body: content, userId: userId })
         ).unwrap();
         setContent("");
         setTitle("");
         setUserId("");
+        navigate("/");
       } catch (error) {
         console.error("Failed to save the post", error);
       } finally {

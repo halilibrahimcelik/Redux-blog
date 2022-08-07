@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux/es/exports";
+import React from "react";
+import { useSelector } from "react-redux/es/exports";
 import {
   selectAllPost,
   getAllErrors,
   getAllStatus,
-  fetchPosts,
 } from "../app/features/post/postSlice";
 
 import PostExcerpt from "./PostExcerpt";
@@ -13,13 +12,13 @@ const PostList = () => {
   const posts = useSelector(selectAllPost);
   const status = useSelector(getAllStatus);
   const error = useSelector(getAllErrors);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchPosts());
-    }
-  }, [dispatch, status]);
+  // const dispatch = useDispatch();
+  //!index js'de sayfa yüklenir yüklenmez veriyi çekiyorum
+  // useEffect(() => {
+  //   if (status === "idle") {
+  //     dispatch(fetchPosts());
+  //   }
+  // }, [dispatch, status]);
 
   let content;
   if (status === "loading") {
