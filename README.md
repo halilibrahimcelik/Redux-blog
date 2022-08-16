@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+##  Redux-blog
 
 This project was bootstrapped with [Website](https://redux-blog-ashen.vercel.app/).
 
